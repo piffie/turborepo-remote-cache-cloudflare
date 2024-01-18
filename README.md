@@ -1,6 +1,7 @@
 <div align="center">
 
 # Turborepo Remote Cache (For Cloudflare Workers!)
+MC² Setup
 
 </div>
 
