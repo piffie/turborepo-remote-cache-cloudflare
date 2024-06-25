@@ -9,50 +9,64 @@ MC² Setup
 
 [![CI](https://github.com/AdiRishi/turborepo-remote-cache-cloudflare/actions/workflows/ci.yml/badge.svg)](https://github.com/AdiRishi/turborepo-remote-cache-cloudflare/actions/workflows/ci.yml) [![Coverage Status](https://coveralls.io/repos/github/AdiRishi/turborepo-remote-cache-cloudflare/badge.svg)](https://coveralls.io/github/AdiRishi/turborepo-remote-cache-cloudflare) ![GitHub License](https://img.shields.io/github/license/AdiRishi/turborepo-remote-cache-cloudflare) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](.github/CONTRIBUTING.md)
 
+<a href="https://adirishi.github.io/turborepo-remote-cache-cloudflare" target="_blank">
+  <img src="https://img.shields.io/badge/Visit-Developer%20Docs-%230572BE?style=for-the-badge&logo=readthedocs&logoColor=white" alt="Visit Developer Docs">
+</a>
+
 </div>
 
 ## 🚀 Introduction
 
 This project offers an open source implementation of the [Turborepo custom remote cache server](https://turbo.build/repo/docs/core-concepts/remote-caching) **purpose-built from the ground up for [Cloudflare Workers](https://developers.cloudflare.com/workers/)**
 
+📚 For detailed documentation, please refer to our [official website](https://adirishi.github.io/turborepo-remote-cache-cloudflare)
+
+> [!IMPORTANT]
+> You can now store your build artifacts in either Cloudflare 🪣 R2 or 🔑 KV storage. Find out how in our [official documentation](https://adirishi.github.io/turborepo-remote-cache-cloudflare/configuration/kv-storage)
+
 ## 🤔 Why should I use this?
 
 If you're a Turborepo user, this project offers compelling advantages:
 
+-   💿 **Storage Options**: Choose between 🪣 [R2](https://adirishi.github.io/turborepo-remote-cache-cloudflare/configuration/r2-storage) or 🔑 [KV](https://adirishi.github.io/turborepo-remote-cache-cloudflare/configuration/kv-storage) storage for your build artifacts. This gives you the flexibility to choose the storage option that best fits your needs.
 -   🚀 **Faster Builds**: Harness the power of remote caching to significantly speed up your builds
 -   🌐 **Independence from Vercel**: Use Turborepo without tying your project to Vercel. This gives you flexibility in hosting decisions.
--   💰 **Cost Savings**: Say goodbye to surprise egress costs when downloading artifacts. This means fewer unexpected charges on your cloud bill.
 -   🌍 **Global Deployment**: Code deploys instantly across the globe in over 300 countries, ensuring unmatched performance and reliability.
--   👛 **Affordable Start**: With Cloudflare Workers' [generous free tier](https://developers.cloudflare.com/workers/platform/pricing), you can make up to 100,000 requests every day at no cost. It's a cost-effective way to get started and scale your application.
+-   💰 **Affordable Start**: With Cloudflare Workers' [generous free tier](https://developers.cloudflare.com/workers/platform/pricing), you can make up to 100,000 requests every day at no cost. Even better Cloudflare has [zero egress fees](https://www.cloudflare.com/en-au/learning/cloud/what-are-data-egress-fees/) on it's platform, meaning you only pay for what you use.
 
 ## ⚡️ Quick start
 
-### Deploy using Cloudflare's deploy button
-
-To deploy this repository quickly, click the following link:
-
-[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/AdiRishi/turborepo-remote-cache-cloudflare)
-
 ### Deploy Using the CLI
 
-For a more hands-on deployment using the CLI, follow the steps below:
+The fastest and easiest way to deploy this project is with [wrangler](https://developers.cloudflare.com/workers/wrangler/) (cloudflare's CLI tool for managing workers).
+
+This project already comes with wrangler installed and configured, so all you need to do is clone this repository and run `pnpm run deploy`.
 
 ```sh
 # 1. Clone the repository
-git clone https://github.com/AdiRishi/turborepo-remote-cache-cloudflare.git custom-cache
+git clone https://github.com/AdiRishi/turborepo-remote-cache-cloudflare.git
 
 # 2. Install packages
 pnpm install
 
 # 3. Create the R2 bucket for storage
-wrangler r2 bucket create turborepo-cache
+pnpm wrangler r2 bucket create turborepo-cache
 
 # 4. Publish the project
-wrangler deploy
+pnpm run deploy
 
 # 5. Set a Bearer auth token
-echo "SECRET" | wrangler secret put TURBO_TOKEN
+echo "SECRET" | pnpm wrangler secret put TURBO_TOKEN
 ```
+
+### Deploy using Cloudflare's deploy button
+
+This project also supports one-click deploy via Cloudflare's deploy button. Use this option only if you already have a Cloudflare account and have used R2 buckets before.
+
+[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/AdiRishi/turborepo-remote-cache-cloudflare)
+
+> [!WARNING]
+> The deploy button workflow has some bugs/gotchas that may catch people new to Cloudflare's ecosystem off guard (see https://github.com/AdiRishi/turborepo-remote-cache-cloudflare/issues/258 or [our docs](https://adirishi.github.io/turborepo-remote-cache-cloudflare/introduction/getting-started#one-click-deploy)). It's recommended to use the CLI method if you're new to Cloudflare.
 
 ## ⚙️ Configuration
 
@@ -62,8 +76,9 @@ In order to successfully run the [deploy](.github/workflows//deploy.yml) Github 
 
 -   `CLOUDFLARE_API_TOKEN`
 -   `CLOUDFLARE_ACCOUNT_ID`
+-   `TURBO_TOKEN`
 
-_Note: These will be automatically set for you if you use the "Deploy with Workers" button._
+For those who have forked this repository, feel free to delete the [release.yml](https://github.com/AdiRishi/turborepo-remote-cache-cloudflare/blob/master/.github/workflows/release.yml) workflow file. This is only used to automatically publish new releases of this repository to GitHub releases.
 
 ### Automatic deletion of old cache files
 

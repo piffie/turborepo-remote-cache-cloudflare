@@ -22,15 +22,15 @@ jobs:
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         env:
-          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN || 'SECRET' }}
         with:
           accountId: ${{ secrets.CF_ACCOUNT_ID || secrets.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CF_API_TOKEN || secrets.CLOUDFLARE_API_TOKEN }}
-          wranglerVersion: '3.22.4'
+          packageManager: 'pnpm'
           preCommands: |
             echo "*** post commands ***"
             wrangler r2 bucket create turborepo-cache || true
             echo "******"
           secrets: |
             TURBO_TOKEN
-          command: 'deploy'
+          command: 'deploy --minify'
